@@ -23,7 +23,7 @@ app.get("/:url", async (req, res) => {
       filter: "audioonly",
     }).pipe(res);
   } catch (e) {
-    res.status(500).status("Encountered Error: " + e.message);
+    res.status(500).send("Encountered Error: " + e.message);
   }
 });
 
