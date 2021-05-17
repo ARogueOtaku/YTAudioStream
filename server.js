@@ -26,6 +26,6 @@ app.get("/:url", async (req, res) => {
   }
 });
 
-const listener = app.listen(3334, () => {
+const listener = app.listen(process.env.PORT, () => {
   console.log("App is listening on port " + listener.address().port);
 });
