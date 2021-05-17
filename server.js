@@ -23,7 +23,7 @@ app.get("/:url", async (req, res) => {
       filter: "audioonly",
     }).pipe(res);
   } catch (e) {
-    console.log(e);
+    console.log(e.code);
   } finally {
     res.send();
   }
