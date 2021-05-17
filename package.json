@@ -1,0 +1,27 @@
+{
+  "name": "ytaudiostream",
+  "version": "1.0.0",
+  "description": "A Web Server that Responds with YouTube Audio Readable Streams",
+  "main": "server.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "ytdl-core": "^4.8.0",
+    "cors": "^2.8.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ARogueOtaku/YTAudioStream.git"
+  },
+  "keywords": [
+    "YouTube"
+  ],
+  "author": "A Rogue Otaku",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ARogueOtaku/YTAudioStream/issues"
+  },
+  "homepage": "https://github.com/ARogueOtaku/YTAudioStream#readme"
+}
