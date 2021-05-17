@@ -12,12 +12,11 @@ app.get("/", async (req, res) => {
 app.get("/:url", async (req, res) => {
   const url = req.params.url;
   const quality = req.query.quality || "highest";
-  res.setHeader("content-type", "audio/webm");
-  res.setHeader("Access-Control-Expose-Headers", "title");
   try {
     const info = await ytdl.getInfo(url);
     res.setHeader("title", encodeURI(info.videoDetails.title));
-    console.log(req.origin);
+    res.setHeader("content-type", "audio/webm");
+    res.setHeader("Access-Control-Expose-Headers", "title");
     ytdl("http://www.youtube.com/watch?v=" + url, {
       quality: quality,
       filter: "audioonly",
@@ -27,6 +26,6 @@ app.get("/:url", async (req, res) => {
   }
 });
 
-const listener = app.listen(process.env.PORT, () => {
+const listener = app.listen(3334, () => {
   console.log("App is listening on port " + listener.address().port);
 });
