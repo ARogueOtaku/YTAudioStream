@@ -6,7 +6,6 @@ const https = require("https");
 const http = require("http");
 const app = express();
 const { warn, info, error, debug, requestLogger } = require("./utils/logger");
-const EV = process.env.NODE_ENV;
 app.use(cors());
 app.use(requestLogger);
 
