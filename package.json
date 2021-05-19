@@ -4,12 +4,17 @@
   "description": "A Web Server that Responds with YouTube Audio Readable Streams",
   "main": "server.js",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "test": "nodemon ."
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
-    "ytdl-core": "^4.8.0",
-    "cors": "^2.8.5"
+    "node-cron": "^3.0.0",
+    "ytdl-core": "^4.8.0"
   },
   "repository": {
     "type": "git",

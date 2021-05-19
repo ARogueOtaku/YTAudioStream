@@ -1,31 +1,42 @@
 const express = require("express");
 const ytdl = require("ytdl-core");
 const cors = require("cors");
+const cron = require("node-cron");
+const https = require("https");
+const http = require("http");
 const app = express();
-
+const { warn, info, error, debug, requestLogger } = require("./utils/logger");
+const EV = process.env.NODE_ENV;
 app.use(cors());
+app.use(requestLogger);
 
-app.get("/", async (req, res) => {
-  res.status(400).send("Video Id Required! BAD REQUEST!");
+app.get("/keepawake", async (req, res) => {
+  res.status(200).send("I'm Awake!");
 });
 
-app.get("/:url", async (req, res) => {
-  const url = req.params.url;
-  const quality = req.query.quality || "highest";
-  try {
-    const info = await ytdl.getInfo(url);
-    res.setHeader("title", encodeURI(info.videoDetails.title));
-    res.setHeader("content-type", "audio/webm");
-    res.setHeader("Access-Control-Expose-Headers", "title");
-    ytdl("http://www.youtube.com/watch?v=" + url, {
-      quality: quality,
-      filter: "audioonly",
-    }).pipe(res);
-  } catch (e) {
-    res.status(500).send("Encountered Error: " + e.message);
-  }
+app.get("/getaudio", (req, res) => {
+  const videoID = req.query.v;
+  const quality = req.query.q;
+  ytdl("http://www.youtube.com/watch?v=" + videoID, {
+    quality,
+    filter: "audioonly",
+  })
+    .on("error", (e) => {
+      error(`Encountered error while geting Audio: ${e.message}`);
+      res.status(500).send(`Encountered error: ${e.message}`);
+    })
+    .pipe(res);
 });
 
-const listener = app.listen(process.env.PORT, () => {
-  console.log("App is listening on port " + listener.address().port);
+const listener = app.listen(EV === "prod" ? process.env.PORT : 3000, () => {
+  debug(`App is listening on port: ${listener.address().port}`);
+  cron.schedule("*/5 * * * * *", () => {
+    info(`Requesting App to Stay Awake`);
+    try {
+      if (EV === "prod") https.get(`https://${process.env.HOST}/keepawake`);
+      else http.get(`http://localhost:3000/keepawake`);
+    } catch (err) {
+      error(`Could not Send Wakeup Request. Error: ${err.message}`);
+    }
+  });
 });
