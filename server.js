@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const ytdl = require("ytdl-core");
 const cors = require("cors");
-const cron = require("node-cron");
 const https = require("https");
 const http = require("http");
 const app = express();
@@ -31,13 +30,4 @@ app.get("/getaudio", (req, res) => {
 
 const listener = app.listen(process.env.PORT, () => {
   debug(`App is listening on port: ${listener.address().port}`);
-  cron.schedule("*/2 * * * *", () => {
-    info(`Requesting App to Stay Awake`);
-    try {
-      if (EV === "prod") https.get(`https://${process.env.HOST}/keepawake`);
-      else http.get(`http://localhost:3000/keepawake`);
-    } catch (err) {
-      error(`Could not Send Wakeup Request. Error: ${err.message}`);
-    }
-  });
 });
