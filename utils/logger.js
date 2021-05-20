@@ -15,7 +15,12 @@ function debug(message) {
 }
 
 function requestLogger(req, res, next) {
-  debug(`Request received at ${req.url} from ${req.connection.remoteAddress}`);
+  debug(
+    `Request received at ${req.url} from ${
+      (req.headers["x-forwarded-for"] || "").split(",")[0] ||
+      req.connection.remoteAddress
+    }`
+  );
   next();
 }
 
