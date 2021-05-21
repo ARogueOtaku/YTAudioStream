@@ -11,7 +11,7 @@ app.get("/keepawake", (req, res) => {
   res.status(200).send("I'm Awake!");
 });
 
-app.get("/getaudio", (req, res) => {
+app.get("/audio", (req, res) => {
   const videoID = req.query.v;
   const quality = req.query.q;
   const stream = getAudio(videoID, quality, (err) => {
