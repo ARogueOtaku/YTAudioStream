@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const { error, debug, requestLogger } = require("./utils/logger");
-const { getAudio, searchVideos } = require("./utils/yt-methods");
+const { getAudio, searchVideos, getTitle } = require("./utils/yt-methods");
 app.use(cors());
 app.use(requestLogger);
 
@@ -19,6 +19,15 @@ app.get("/audio", (req, res) => {
     res.status(500).send(`Encountered error: ${err.message}`);
   });
   stream.pipe(res);
+});
+
+app.get("/title", async (req, res) => {
+  const videoID = req.query.v;
+  const title = await getTitle(videoID, (err) => {
+    error(`Encountered error while geting Title: ${err.message}`);
+    res.status(500).send(`Encountered error: ${err.message}`);
+  });
+  res.status(200).send(title);
 });
 
 app.get("/search", async (req, res) => {

@@ -2,7 +2,7 @@ const ytdl = require("ytdl-core");
 const fetch = require("node-fetch");
 const { info } = require("./logger");
 
-function getAudio(videoID, quality, errorCallback) {
+function getAudio(videoID, quality = "lowest", errorCallback) {
   const audioStream = ytdl("http://www.youtube.com/watch?v=" + videoID, {
     quality,
     filter: "audioonly",
@@ -12,6 +12,16 @@ function getAudio(videoID, quality, errorCallback) {
   });
   info(`Responded with Audio Stream`);
   return audioStream;
+}
+
+async function getTitle(videoID, errorCallback) {
+  const url = `http://www.youtube.com/watch?v=${videoID}`;
+  try {
+    const info = await ytdl.getBasicInfo(url);
+    return info.videoDetails.title;
+  } catch (e) {
+    errorCallback(e);
+  }
 }
 
 async function searchVideos(query, num = 1, errorCallback) {
@@ -35,4 +45,4 @@ async function searchVideos(query, num = 1, errorCallback) {
   }
 }
 
-module.exports = { getAudio, searchVideos };
+module.exports = { getAudio, searchVideos, getTitle };
