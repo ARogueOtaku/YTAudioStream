@@ -7,7 +7,7 @@ const { getAudio, searchVideos, getTitle } = require("./utils/yt-methods");
 app.use(cors());
 app.use(requestLogger);
 
-app.get("/keepawake", (req, res) => {
+app.get("/ping", (req, res) => {
   res.status(200).send("I'm Awake!");
 });
 
